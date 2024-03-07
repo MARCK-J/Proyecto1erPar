@@ -1,0 +1,63 @@
+### Vista de todas las etiquetas
+GET http://localhost:9999/api/v1/label
+Content-Type: application/json
+Accept: application/json
+
+
+### Vista de una etiqueta por Id
+GET http://localhost:9999/api/v1/label/User/1
+Content-Type: application/json
+Accept: application/json
+
+### Vista fallida de una etiqueta por Id
+GET http://localhost:9999/api/v1/label/User/8
+Content-Type: application/json
+Accept: application/json
+
+
+### Crear una etiqueta exitosamente
+POST http://localhost:9999/api/v1/label/User/1/Create
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "label1"
+}
+
+### Crear una etiqueta fallida
+POST http://localhost:9999/api/v1/label/User/99/Create
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "label2"
+}
+
+### Actualizar una etiqueta exitosamente
+PUT http://localhost:9999/api/v1/label/Update/10
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "Trip"
+}
+
+### Actualizar una etiqueta fallida
+PUT http://localhost:9999/api/v1/label/Update/99
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "Intercambio"
+}
+
+### Eliminar una etiqueta exitosamente
+DELETE http://localhost:9999/api/v1/label/Delete/10
+Content-Type: application/json
+Accept: application/json
+
+
+### Eliminar una etiqueta exitosamente
+DELETE http://localhost:9999/api/v1/label/Delete/99
+Content-Type: application/json
+Accept: application/json

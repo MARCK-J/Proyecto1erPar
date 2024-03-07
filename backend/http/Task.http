@@ -1,0 +1,79 @@
+### Vista de todas las tareas
+GET http://localhost:9999/api/v1/task
+Content-Type: application/json
+Accept: application/json
+
+### Vista de una tarea exitosa
+GET http://localhost:9999/api/v1/task/etiqueta/2
+Content-Type: application/json
+Accept: application/json
+
+### Vista de una tarea fallida
+GET http://localhost:9999/api/v1/task/etiqueta/99
+Content-Type: application/json
+Accept: application/json
+
+### Vista de una tarea segun estado
+GET http://localhost:9999/api/v1/task/estado/Pending
+Content-Type: application/json
+Accept: application/json
+
+### Crear una tarea exitosa
+POST http://localhost:9999/api/v1/task/Label/2/Create
+Content-Type: application/json
+Accept: application/json
+
+{
+    "titulo": "Task 2",
+    "descripcion": "Task 2 description",
+    "estado": "Pending",
+    "fechaLimite": "2020-12-30"
+}
+
+### Crear una tarea fallida
+POST http://localhost:9999/api/v1/task/Label/2/Create
+Content-Type: application/json
+Accept: application/json
+
+{
+    "titulo": "Task 2",
+    "descripcion": "Task 2 description",
+    "fechaLimite": "2020-12-30"
+}
+
+### Actualizar una tarea exitosa
+PUT http://localhost:9999/api/v1/task/Update/10
+Content-Type: application/json
+Accept: application/json
+
+{
+    "etiquetaId": 6,
+    "titulo": "Task 3",
+    "descripcion": "Task 3 description",
+    "estado": "Completed",
+    "fechaLimite": "2020-12-28"
+}
+
+### Actualizar una tarea fallida
+PUT http://localhost:9999/api/v1/task/Update/99
+Content-Type: application/json
+Accept: application/json
+
+{
+    "etiquetaId": 6,
+    "titulo": "Task 3",
+    "descripcion": "Task 3 description",
+    "estado": "Completed",
+    "fechaLimite": "2020-12-28"
+}
+
+
+### Eliminar una tarea exitosa
+DELETE http://localhost:9999/api/v1/task/Delete/10
+Content-Type: application/json
+Accept: application/json
+
+### Eliminar una tarea fallida
+DELETE http://localhost:9999/api/v1/task/Delete/99
+Content-Type: application/json
+Accept: application/json
