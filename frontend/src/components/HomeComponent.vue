@@ -3,14 +3,14 @@
       <!-- Barra de navegación -->
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <router-link to="/home" class="navbar-brand">Inicio</router-link>
+          <router-link to="/" class="navbar-brand">Inicio</router-link>
           <div class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <router-link to="/tareas" class="nav-link">Tareas</router-link>
+                <router-link to="/tareas" class="navbar-brand">Tareas</router-link>
               </li>
               <li class="nav-item">
-                <router-link to="/etiquetas" class="nav-link">Etiquetas</router-link>
+                <router-link to="/etiquetas" class="navbar-brand">Etiquetas</router-link>
               </li>
             </ul>
             <div class="navbar-text">

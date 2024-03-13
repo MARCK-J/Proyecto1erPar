@@ -7,10 +7,10 @@
           <div class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <router-link to="/tareas" class="nav-link">Tareas</router-link>
+                <router-link to="/tareas" class="navbar-brand">Tareas</router-link>
               </li>
               <li class="nav-item">
-                <router-link to="/etiquetas" class="nav-link">Etiquetas</router-link>
+                <router-link to="/etiquetas" class="navbar-brand">Etiquetas</router-link>
               </li>
             </ul>
             <div class="navbar-text">
@@ -26,28 +26,34 @@
   
       <!-- Contenido de la página de tareas -->
       <div class="container mt-5">
-        <h2 class="text-center mb-4">Tareas</h2>
+        <h2 class="text-center mb-4">Tareas Pendientes</h2>
         <table class="table">
+          <!-- Cabecera de la tabla -->
           <thead>
             <tr>
-              <th>Etiqueta ID</th>
               <th>Título</th>
               <th>Descripción</th>
               <th>Estado</th>
               <th>Fecha Creación</th>
               <th>Fecha Modificación</th>
               <th>Fecha Límite</th>
+              <th>Acciones</th> <!-- Nueva columna para acciones -->
             </tr>
           </thead>
+          <!-- Cuerpo de la tabla -->
           <tbody>
+            <!-- Iteración sobre las tareas -->
             <tr v-for="task in tasks" :key="task.id">
-              <td>{{ task.etiquetaId }}</td>
-              <td>{{ task.titulo }}</td>
-              <td>{{ task.descripcion }}</td>
-              <td>{{ task.estado }}</td>
+              <td><input v-model="task.titulo" type="text" class="form-control"></td>
+              <td><input v-model="task.descripcion" type="text" class="form-control"></td>
+              <td><input v-model="task.estado" type="text" class="form-control"></td>
               <td>{{ task.fechaCreacion }}</td>
               <td>{{ task.fechaModificacion }}</td>
-              <td>{{ task.fechaLimite }}</td>
+              <td>{{ task.fechaLimit }}</td>
+              <td>
+                <button @click="actualizarTarea(task)">Actualizar</button>
+                <button @click="eliminarTarea(task.id)">Eliminar</button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -59,34 +65,37 @@
         </div>
 
       <div class="container mt-5">
-        <h2 class="text-center mb-4">Tareas</h2>
+        <h2 class="text-center mb-4">Tareas Completadas</h2>
         <table class="table" v-if="showingCompletedTasks">
             <!-- Cabecera de la tabla -->
-            <thead>
-            <tr>
-                <th>Etiqueta ID</th>
+              <thead>
+              <tr>
                 <th>Título</th>
                 <th>Descripción</th>
                 <th>Estado</th>
                 <th>Fecha Creación</th>
                 <th>Fecha Modificación</th>
                 <th>Fecha Límite</th>
-            </tr>
+                <th>Acciones</th> <!-- Nueva columna para acciones -->
+              </tr>
             </thead>
             <!-- Cuerpo de la tabla -->
             <tbody>
-            <!-- Iteración sobre las tareas Completadas -->
-            <tr v-for="task in completedTasks" :key="task.id">
-                <td>{{ task.etiquetaId }}</td>
-                <td>{{ task.titulo }}</td>
-                <td>{{ task.descripcion }}</td>
-                <td>{{ task.estado }}</td>
+              <!-- Iteración sobre las tareas -->
+              <tr v-for="task in completedTasks" :key="task.id">
+                <td><input v-model="task.titulo" type="text" class="form-control"></td>
+                <td><input v-model="task.descripcion" type="text" class="form-control"></td>
+                <td><input v-model="task.estado" type="text" class="form-control"></td>
                 <td>{{ task.fechaCreacion }}</td>
                 <td>{{ task.fechaModificacion }}</td>
-                <td>{{ task.fechaLimite }}</td>
-            </tr>
+                <td>{{ task.fechaLimit }}</td>
+                <td>
+                  <button @click="actualizarTarea(task)">Actualizar</button>
+                  <button @click="eliminarTarea(task.id)">Eliminar</button>
+                </td>
+              </tr>
             </tbody>
-        </table>
+          </table>
         </div>
         <div class="container mt-5">
             <h2 class="text-center mb-4" style="color: #007bff;">Crear Nueva Tarea</h2>
@@ -208,7 +217,7 @@
     },
 
     async crearTarea() {
-      // Verificamos si se ha seleccionado una etiqueta
+  // Verificamos si se ha seleccionado una etiqueta
       if (!this.selectedEtiqueta) {
         console.error('Debe seleccionar una etiqueta para la tarea.');
         return;
@@ -222,19 +231,52 @@
         const response = await axios.post(`http://localhost:9999/api/v1/task/Label/${this.selectedEtiqueta}/Create`, nuevaTareaConEtiqueta);
         const createdTask = response.data.result;
         console.log('Tarea creada exitosamente:', createdTask);
-        // Limpiamos el formulario después de crear la tarea
-        this.getTasksByEtiquetaId();
 
+        // Agregamos la nueva tarea a la lista existente
+        this.tasks.push(createdTask);
+
+        // Limpiamos el formulario después de crear la tarea
         this.nuevaTarea = {
           titulo: '',
           descripcion: '',
           estado: '',
           fechaLimite: '',
         };
-        // Podemos agregar lógica adicional aquí, como mostrar un mensaje de éxito
       } catch (error) {
         console.error('Error al crear la tarea:', error);
         // Podemos agregar lógica adicional aquí, como mostrar un mensaje de error al usuario
+      }
+    },
+
+    async actualizarTarea(task) {
+      try {
+        // Realizar la solicitud para actualizar la tarea
+        const response = await axios.put(`http://localhost:9999/api/v1/task/Update/${task.id}`, task);
+        const updatedTask = response.data.result;
+        console.log('Tarea actualizada exitosamente:', updatedTask);
+
+        // Actualizar la tarea en la lista local
+        const index = this.tasks.findIndex(t => t.id === updatedTask.id);
+        if (index !== -1) {
+          // Actualizar solo los campos que se han modificado
+          this.tasks[index] = { ...this.tasks[index], ...updatedTask };
+        }
+      } catch (error) {
+        console.error('Error al actualizar la tarea:', error);
+      }
+    },
+
+
+    async eliminarTarea(taskId) {
+      try {
+        // Realizar la solicitud para eliminar la tarea
+        await axios.delete(`http://localhost:9999/api/v1/task/Delete/${taskId}`);
+        console.log('Tarea eliminada exitosamente:', taskId);
+
+        // Actualizar la lista de tareas después de la eliminación
+        this.tasks = this.tasks.filter(task => task.id !== taskId);
+      } catch (error) {
+        console.error('Error al eliminar la tarea:', error);
       }
     },
 
@@ -246,7 +288,7 @@
 <style scoped>
   /* Estilos específicos para este componente */
   .container {
-    max-width: 800px;
+    max-width: max-content;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
@@ -273,4 +315,3 @@
     margin-right: 10px;
   }
   </style>
-  
