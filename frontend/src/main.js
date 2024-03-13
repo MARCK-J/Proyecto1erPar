@@ -4,6 +4,7 @@ import App from './App.vue';
 import LoginComponent from './components/LoginComponent.vue';
 import HomeComponent from './components/HomeComponent.vue';
 import LabelComponent from './components/LabelComponent.vue';
+import TaskComponent from './components/TaskComponent.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -27,6 +28,12 @@ const routes = [
     name: 'Etiquetas',
     path: '/etiquetas',
     component: LabelComponent
+  }
+  ,
+  {
+    name: 'Tareas',
+    path: '/tareas',
+    component: TaskComponent
   }
 ];
 
