@@ -65,6 +65,10 @@
           <label for="fechaLimit{{ task.id }}">Fecha Límite:</label>
           <input v-model="task.fechaLimite" type="text" class="form-control" id="fechaLimite{{ task.id }}">
         </div>
+        <div class="form-group mb-3">
+  <label for="tiempoTranscurrido{{ task.id }}">Tiempo Transcurrido:</label>
+  <input :value="formatoTiempoTranscurrido(calcularTiempoTranscurrido(parseFecha(task.fechaCreacion), parseFecha(task.fechaLimite)))" type="text" class="form-control" id="tiempoTranscurrido{{ task.id }}" disabled>
+</div>
         <!-- Acciones -->
         <button @click="actualizarTarea(task)" class="btn btn-primary mr-1" style="margin-right: 75px;">Actualizar</button>
         <button @click="eliminarTarea(task.id)" class="btn btn-danger">Eliminar</button>
@@ -115,11 +119,37 @@ export default {
     if (userId) {
       this.getLabelsByUserId(userId);
       this.getTasksByEtiquetaId();
+      console.error('ID de usuario no válido.', userId);
     } else {
       console.error('ID de usuario no válido.');
     }
   },
+  
   methods: {
+    parseFecha(fechaString) {
+    return new Date(fechaString);
+  },
+  // Función para calcular los días transcurridos entre dos fechas
+  calcularTiempoTranscurrido(fechaInicio, fechaFin) {
+    const unMinuto = 1000 * 60; // milisegundos en un minuto
+    const unHora = unMinuto * 60; // milisegundos en una hora
+    const unDia = unHora * 24; // milisegundos en un día
+
+    const diferenciaTiempo = Math.abs(fechaFin.getTime() - fechaInicio.getTime());
+    const diasTranscurridos = Math.floor(diferenciaTiempo / unDia);
+    const horasTranscurridas = Math.floor((diferenciaTiempo % unDia) / unHora);
+    const minutosTranscurridos = Math.floor((diferenciaTiempo % unHora) / unMinuto);
+
+    return {
+      dias: diasTranscurridos,
+      horas: horasTranscurridas,
+      minutos: minutosTranscurridos
+    };
+  },
+  // Función para formatear el objeto de tiempo transcurrido en una cadena legible
+  formatoTiempoTranscurrido(tiempoTranscurrido) {
+    return `${tiempoTranscurrido.dias} días, ${tiempoTranscurrido.horas} horas y ${tiempoTranscurrido.minutos} minutos`;
+  },
     redirectToLogin() {
       this.$router.push('/login');
     },
