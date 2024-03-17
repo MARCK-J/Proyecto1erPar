@@ -22,31 +22,29 @@
       </div>
     </nav>
 
+
+ 
+
     <!-- Contenido de la página de tareas -->
-    <div class="container mt-5">
-      <h2 class="text-center mb-4">Tareas</h2>
-
-      <!-- Panel group para los paneles de tareas -->
-      <div class="d-flex flex-wrap">
-        <!-- Iteración sobre las tareas -->
-        <div v-for="task in tasks" :key="task.id" class="card mb-3" style="width: 18rem; margin-right: 20px;">
-          <!-- Cabecera del panel -->
-          <div class="card-header" style="color: white; background-color: rgb(114, 213, 147);">
-            <h5 class="mb-0">{{ task.titulo }}</h5>
-          </div>
-
-          <!-- Contenido del panel -->
-          <div class="card-body">
-            <div class="form-group form-check mb-3">
-              <input v-model="task.completada" @change="marcarComoCompletada(task)" type="checkbox"
-                class="form-check-input" id="completada{{ task.id }}">
-              <label class="form-check-label" for="completada{{ task.id }}">Completada</label>
-            </div>
-            <div class="form-group mb-3">
-              <label for="descripcion{{ task.id }}">Descripción:</label>
-              <input v-model="task.descripcion" type="text" class="form-control" id="descripcion{{ task.id }}">
-            </div>
-            <div class="form-group mb-3">
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Tareas Completadas</h2>
+  
+  <!-- Panel group para los paneles de tareas -->
+  <div class="d-flex flex-wrap">
+    <!-- Iteración sobre las tareas -->
+    <div v-for="task in completedTasks" :key="task.id" class="card mb-3" style="width: 18rem; margin-right: 20px;">
+      <!-- Cabecera del panel -->
+      <div class="card-header" style="color: white; background-color: rgb(114, 213, 147);">
+        <h5 class="mb-0">{{ task.titulo }}</h5>
+      </div>
+      
+      <!-- Contenido del panel -->
+      <div class="card-body">
+        <div class="form-group mb-3">
+          <label for="descripcion{{ task.id }}">Descripción:</label>
+          <input v-model="task.descripcion" type="text" class="form-control" id="descripcion{{ task.id }}">
+        </div>
+        <div class="form-group mb-3">
               <label for="estado{{ task.id }}">Estado:</label>
               <select v-model="task.estado" class="form-control" id="estado{{ task.id }}">
                 <option value="Pendiente" :selected="task.estado === 'Pendiente'">Pendiente</option>
@@ -55,59 +53,25 @@
                 <!-- Agrega más opciones según sea necesario -->
               </select>
             </div>
-            <div class="form-group mb-3">
-              <label for="fechaCreacion{{ task.id }}">Fecha Creación:</label>
-              <input v-model="task.fechaCreacion" type="text" class="form-control" id="fechaCreacion{{ task.id }}"
-                disabled>
-            </div>
-            <div class="form-group mb-3">
-              <label for="fechaModificacion{{ task.id }}">Fecha Modificación:</label>
-              <input v-model="task.fechaModificacion" type="text" class="form-control"
-                id="fechaModificacion{{ task.id }}" disabled>
-            </div>
-            <div class="form-group mb-3">
-              <label for="fechaLimit{{ task.id }}">Fecha Límite:</label>
-              <input v-model="task.fechaLimite" type="datetime" class="form-control"
-                id="fechaLimite{{ task.id }}">
-            </div>
-            <!-- Acciones -->
-            <button @click="actualizarTarea(task)" class="btn btn-primary mr-1"
-              style="margin-right: 75px;">Actualizar</button>
-            <button @click="eliminarTarea(task.id)" class="btn btn-danger">Eliminar</button>
-          </div>
+        <div class="form-group mb-3">
+          <label for="fechaCreacion{{ task.id }}">Fecha Creación:</label>
+          <input v-model="task.fechaCreacion" type="text" class="form-control" id="fechaCreacion{{ task.id }}" disabled>
         </div>
+        <div class="form-group mb-3">
+          <label for="fechaModificacion{{ task.id }}">Fecha Modificación:</label>
+          <input v-model="task.fechaModificacion" type="text" class="form-control" id="fechaModificacion{{ task.id }}" disabled>
+        </div>
+        <div class="form-group mb-3">
+          <label for="fechaLimit{{ task.id }}">Fecha Límite:</label>
+          <input v-model="task.fechaLimite" type="text" class="form-control" id="fechaLimite{{ task.id }}">
+        </div>
+        <!-- Acciones -->
+        <button @click="actualizarTarea(task)" class="btn btn-primary mr-1" style="margin-right: 75px;">Actualizar</button>
+        <button @click="eliminarTarea(task.id)" class="btn btn-danger">Eliminar</button>
       </div>
     </div>
-
-
-
-    <div class="container mt-5" style=" margin-bottom: 0px;">
-      <h2 class="text-center mb-4" style="color: #007bff;">Crear Nueva Tarea</h2>
-
-      <div class="input-group mb-3">
-        <!-- Input para el título de la tarea -->
-        <input v-model="nuevaTarea.titulo" type="text" class="form-control" placeholder="Título de la tarea">
-        <!-- Input para la descripción de la tarea -->
-        <input v-model="nuevaTarea.descripcion" type="text" class="form-control" placeholder="Descripción">
-        <!-- Input para el estado de la tarea -->
-        <select v-model="nuevaTarea.estado" class="form-control">
-          <option value="" disabled selected>Selecciona un estado</option>
-          <option value="Pendiente">Pendiente</option>
-          <option value="En proceso">En proceso</option>
-        </select>
-        <!-- Input para la fecha límite de la tarea -->
-        <input v-model="nuevaTarea.fechaLimite" type="datetime-local" class="form-control">
-        <!-- Select para la etiqueta de la tarea -->
-        <select v-model="selectedEtiqueta" class="form-select">
-          <option value="" disabled>Seleccionar etiqueta</option>
-          <option v-for="etiqueta in etiquetas" :key="etiqueta.id" :value="etiqueta.id">{{ etiqueta.name }}</option>
-        </select>
-        <button @click="crearTarea" class="btn btn-primary">Crear</button>
-      </div>
-    </div>
-    <br>
-    <br>
-    <br>
+  </div>
+</div>
 
 
     <!-- Barra de navegación inferior -->
@@ -156,40 +120,11 @@ export default {
     }
   },
   methods: {
-
-    marcarComoCompletada(task) {
-
-      task.estado = 'Completada';
-      this.actualizarTarea(task);
-      window.location.reload();
-      console.log('Tarea marcada como completada:', task);
-
-    },
     redirectToLogin() {
       this.$router.push('/login');
     },
     redirectToSignIn() {
       // Agrega lógica para redirigir a la ruta de registro (si es necesario)
-    },
-    async getTasksByEtiquetaId() {
-      try {
-        const userId = sessionStorage.getItem('userId');
-        if (userId) {
-          const response = await axios.get(`http://localhost:9999/api/v1/label/User/${userId}`);
-          const etiquetas = response.data.result;
-          for (const etiqueta of etiquetas) {
-            const tasksResponse = await axios.get(`http://localhost:9999/api/v1/task/etiqueta/${etiqueta.id}`);
-            // Filtrar solo las tareas con estado "Pending"
-            const allTasks = tasksResponse.data.result.filter(task => task.estado !== 'Completada');
-            this.tasks.push(...allTasks);
-          }
-          console.log('Tareas cargadas exitosamente:', this.tasks);
-        } else {
-          console.error('ID de usuario no válido.');
-        }
-      } catch (error) {
-        console.error('Error al cargar las tareas:', error);
-      }
     },
 
     async getLabelsByUserId(userId) {
@@ -202,7 +137,7 @@ export default {
       }
     },
 
-    async showCompletedTasks() {
+    async getTasksByEtiquetaId() {
       if (this.showingCompletedTasks) {
         // Si se está mostrando las tareas completadas y se presiona el botón nuevamente,
         // limpiamos el array y restablecemos el indicador a false
@@ -332,7 +267,6 @@ export default {
   /* Para que la imagen sea redonda */
   margin-right: 10px;
 }
-
 .logo-icon {
   width: 50px;
   /* Ajusta el tamaño de la imagen del usuario según sea necesario */

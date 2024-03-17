@@ -1,28 +1,26 @@
 <template>
     <div>
       <!-- Barra de navegación -->
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          <router-link to="/" class="navbar-brand">Inicio</router-link>
-          <div class="collapse navbar-collapse">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <router-link to="/tareas" class="navbar-brand">Tareas</router-link>
-              </li>
-              <li class="nav-item">
-                <router-link to="/etiquetas" class="navbar-brand">Etiquetas</router-link>
-              </li>
-            </ul>
-            <div class="navbar-text">
-              <!-- Imagen del usuario -->
-              <img src="@/assets/UserIcon.png" alt="Usuario" class="user-icon" />
-              <!-- Botones de Login y Sign In -->
-              <button class="btn btn-primary mr-2" @click="redirectToLogin">Login</button>
-              <button class="btn btn-secondary" @click="redirectToSignIn">Sign In</button>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <router-link to="/" class="navbar-brand">
+          <img src="@/assets/LogoApp.jpg" alt="Inicio" class="logo-icon" />
+          Inicio
+        </router-link>
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <!-- Las opciones de Tareas y Etiquetas se han eliminado de aquí -->
+          </ul>
+          <div class="navbar-text">
+            <!-- Imagen del usuario -->
+            <img src="@/assets/UserIcon.png" alt="Usuario" class="user-icon" />
+            <!-- Botones de Login y Sign In -->
+            <button class="btn btn-primary mr-2" @click="redirectToLogin">Login</button>
+            <button class="btn btn-secondary" @click="redirectToSignIn">Sign In</button>
           </div>
         </div>
-      </nav>
+      </div>
+    </nav>
   
       <!-- Contenido de la página de etiquetas -->
     <div class="container mt-5">
@@ -48,14 +46,26 @@
       </table>
     </div>
 
-    <!-- Crear Nueva Etiqueta -->
-    <div class="mt-4">
-      <h4 class="mb-3">Crear Nueva Etiqueta</h4>
+    <div class="container mt-5">
+      <h2 class="text-center mb-4" style="color: #007bff;">Crear Nueva Tarea</h2>
+
       <div class="input-group mb-3">
         <input v-model="nuevaEtiqueta" type="text" class="form-control" placeholder="Nombre de la etiqueta">
         <button @click="crearEtiqueta" class="btn btn-primary">Crear</button>
       </div>
     </div>
+
+
+    <!-- Barra de navegación inferior -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-bottom bg-light">
+      <div class="container-fluid justify-content-center">
+        <router-link to="/tareas" class="nav-link mx-2">Tareas</router-link>
+        <router-link to="/etiquetas" class="nav-link mx-2">Etiquetas</router-link>
+        <router-link to="/tareasCompletadas" class="nav-link mx-2">Completadas</router-link>
+        <router-link to="/tareasProceso" class="nav-link mx-2">En Proceso</router-link>
+        <router-link to="/tareasPendientes" class="nav-link mx-2">Pendientes</router-link>
+      </div>
+    </nav>
   </div>
 </template>
   
@@ -166,7 +176,7 @@ export default {
   }
   
   .navbar {
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     border-bottom: 1px solid #ccc;
     background-color: #f8f9fa;
   }
@@ -182,4 +192,12 @@ export default {
     border-radius: 50%; /* Para que la imagen sea redonda */
     margin-right: 10px;
   }
+  .logo-icon {
+  width: 50px;
+  /* Ajusta el tamaño de la imagen del usuario según sea necesario */
+  height: 50px;
+  border-radius: 50%;
+  /* Para que la imagen sea redonda */
+  margin-right: 10px;
+}
   </style>

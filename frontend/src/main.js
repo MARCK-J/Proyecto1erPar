@@ -12,6 +12,9 @@ import '@fortawesome/fontawesome-free/css/all.css'
 
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import TaskComplete from './components/TaskComplete.vue';
+import TaskPending from './components/TaskPending.vue';
+import TaskProcess from './components/TaskProcess.vue';
 
 const routes = [
   {
@@ -34,6 +37,24 @@ const routes = [
     name: 'Tareas',
     path: '/tareas',
     component: TaskComponent
+  }
+  ,
+  {
+    name: 'TareasCompletadas',
+    path: '/tareasCompletadas',
+    component: TaskComplete
+  }
+  ,
+  {
+    name: 'TareasEnProceso',
+    path: '/tareasProceso',
+    component: TaskProcess
+  }
+  ,
+  {
+    name: 'TareasPendientes',
+    path: '/tareasPendientes',
+    component: TaskPending
   }
 ];
 
