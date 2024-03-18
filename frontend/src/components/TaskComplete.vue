@@ -23,28 +23,30 @@
     </nav>
 
 
- 
+
 
     <!-- Contenido de la página de tareas -->
-<div class="container mt-5">
-  <h2 class="text-center mb-4">Tareas Completadas</h2>
-  
-  <!-- Panel group para los paneles de tareas -->
-  <div class="d-flex flex-wrap">
-    <!-- Iteración sobre las tareas -->
-    <div v-for="task in completedTasks" :key="task.id" class="card mb-3" style="width: 18rem; margin-right: 20px;">
-      <!-- Cabecera del panel -->
-      <div class="card-header" style="color: white; background-color: rgb(114, 213, 147);">
-        <h5 class="mb-0">{{ task.titulo }}</h5>
-      </div>
-      
-      <!-- Contenido del panel -->
-      <div class="card-body">
-        <div class="form-group mb-3">
-          <label for="descripcion{{ task.id }}">Descripción:</label>
-          <input v-model="task.descripcion" type="text" class="form-control" id="descripcion{{ task.id }}">
-        </div>
-        <div class="form-group mb-3">
+    <div class="container mt-5">
+      <h2 class="text-center mb-4">Tareas Completadas</h2>
+
+      <!-- Panel group para los paneles de tareas -->
+      <div class="d-flex flex-wrap">
+        <!-- Iteración sobre las tareas -->
+        <div v-for="task in completedTasks" :key="task.id" class="card mb-3" style="width: 18rem; margin-right: 20px;">
+          <!-- Cabecera del panel -->
+          <div class="card-header" style="color: white; background-color: rgb(114, 213, 147);">
+
+            <input v-model="task.titulo" type="text" class="form-control" id="fechaCreacion{{ task.id }}"
+              style="border: none; background: none; color: inherit; width: 100%; outline: none; cursor: pointer; font-size: inherit;">
+          </div>
+
+          <!-- Contenido del panel -->
+          <div class="card-body">
+            <div class="form-group mb-3">
+              <label for="descripcion{{ task.id }}">Descripción:</label>
+              <input v-model="task.descripcion" type="text" class="form-control" id="descripcion{{ task.id }}">
+            </div>
+            <div class="form-group mb-3">
               <label for="estado{{ task.id }}">Estado:</label>
               <select v-model="task.estado" class="form-control" id="estado{{ task.id }}">
                 <option value="Pendiente" :selected="task.estado === 'Pendiente'">Pendiente</option>
@@ -53,29 +55,34 @@
                 <!-- Agrega más opciones según sea necesario -->
               </select>
             </div>
-        <div class="form-group mb-3">
-          <label for="fechaCreacion{{ task.id }}">Fecha Creación:</label>
-          <input v-model="task.fechaCreacion" type="text" class="form-control" id="fechaCreacion{{ task.id }}" disabled>
+            <div class="form-group mb-3">
+              <label for="fechaCreacion{{ task.id }}">Fecha Creación:</label>
+              <input v-model="task.fechaCreacion" type="text" class="form-control" id="fechaCreacion{{ task.id }}"
+                disabled>
+            </div>
+            <div class="form-group mb-3">
+              <label for="fechaModificacion{{ task.id }}">Fecha Modificación:</label>
+              <input v-model="task.fechaModificacion" type="text" class="form-control"
+                id="fechaModificacion{{ task.id }}" disabled>
+            </div>
+            <div class="form-group mb-3">
+              <label for="fechaLimit{{ task.id }}">Fecha Límite:</label>
+              <input v-model="task.fechaLimite" type="text" class="form-control" id="fechaLimite{{ task.id }}">
+            </div>
+            <div class="form-group mb-3">
+              <label for="tiempoTranscurrido{{ task.id }}">Tiempo Transcurrido:</label>
+              <input
+                :value="formatoTiempoTranscurrido(calcularTiempoTranscurrido(parseFecha(task.fechaCreacion), parseFecha(task.fechaLimite)))"
+                type="text" class="form-control" id="tiempoTranscurrido{{ task.id }}" disabled>
+            </div>
+            <!-- Acciones -->
+            <button @click="actualizarTarea(task)" class="btn btn-primary mr-1"
+              style="margin-right: 75px;">Actualizar</button>
+            <button @click="eliminarTarea(task.id)" class="btn btn-danger">Eliminar</button>
+          </div>
         </div>
-        <div class="form-group mb-3">
-          <label for="fechaModificacion{{ task.id }}">Fecha Modificación:</label>
-          <input v-model="task.fechaModificacion" type="text" class="form-control" id="fechaModificacion{{ task.id }}" disabled>
-        </div>
-        <div class="form-group mb-3">
-          <label for="fechaLimit{{ task.id }}">Fecha Límite:</label>
-          <input v-model="task.fechaLimite" type="text" class="form-control" id="fechaLimite{{ task.id }}">
-        </div>
-        <div class="form-group mb-3">
-  <label for="tiempoTranscurrido{{ task.id }}">Tiempo Transcurrido:</label>
-  <input :value="formatoTiempoTranscurrido(calcularTiempoTranscurrido(parseFecha(task.fechaCreacion), parseFecha(task.fechaLimite)))" type="text" class="form-control" id="tiempoTranscurrido{{ task.id }}" disabled>
-</div>
-        <!-- Acciones -->
-        <button @click="actualizarTarea(task)" class="btn btn-primary mr-1" style="margin-right: 75px;">Actualizar</button>
-        <button @click="eliminarTarea(task.id)" class="btn btn-danger">Eliminar</button>
       </div>
     </div>
-  </div>
-</div>
 
 
     <!-- Barra de navegación inferior -->
@@ -124,32 +131,32 @@ export default {
       console.error('ID de usuario no válido.');
     }
   },
-  
+
   methods: {
     parseFecha(fechaString) {
-    return new Date(fechaString);
-  },
-  // Función para calcular los días transcurridos entre dos fechas
-  calcularTiempoTranscurrido(fechaInicio, fechaFin) {
-    const unMinuto = 1000 * 60; // milisegundos en un minuto
-    const unHora = unMinuto * 60; // milisegundos en una hora
-    const unDia = unHora * 24; // milisegundos en un día
+      return new Date(fechaString);
+    },
+    // Función para calcular los días transcurridos entre dos fechas
+    calcularTiempoTranscurrido(fechaInicio, fechaFin) {
+      const unMinuto = 1000 * 60; // milisegundos en un minuto
+      const unHora = unMinuto * 60; // milisegundos en una hora
+      const unDia = unHora * 24; // milisegundos en un día
 
-    const diferenciaTiempo = Math.abs(fechaFin.getTime() - fechaInicio.getTime());
-    const diasTranscurridos = Math.floor(diferenciaTiempo / unDia);
-    const horasTranscurridas = Math.floor((diferenciaTiempo % unDia) / unHora);
-    const minutosTranscurridos = Math.floor((diferenciaTiempo % unHora) / unMinuto);
+      const diferenciaTiempo = Math.abs(fechaFin.getTime() - fechaInicio.getTime());
+      const diasTranscurridos = Math.floor(diferenciaTiempo / unDia);
+      const horasTranscurridas = Math.floor((diferenciaTiempo % unDia) / unHora);
+      const minutosTranscurridos = Math.floor((diferenciaTiempo % unHora) / unMinuto);
 
-    return {
-      dias: diasTranscurridos,
-      horas: horasTranscurridas,
-      minutos: minutosTranscurridos
-    };
-  },
-  // Función para formatear el objeto de tiempo transcurrido en una cadena legible
-  formatoTiempoTranscurrido(tiempoTranscurrido) {
-    return `${tiempoTranscurrido.dias} días, ${tiempoTranscurrido.horas} horas y ${tiempoTranscurrido.minutos} minutos`;
-  },
+      return {
+        dias: diasTranscurridos,
+        horas: horasTranscurridas,
+        minutos: minutosTranscurridos
+      };
+    },
+    // Función para formatear el objeto de tiempo transcurrido en una cadena legible
+    formatoTiempoTranscurrido(tiempoTranscurrido) {
+      return `${tiempoTranscurrido.dias} días, ${tiempoTranscurrido.horas} horas y ${tiempoTranscurrido.minutos} minutos`;
+    },
     redirectToLogin() {
       this.$router.push('/login');
     },
@@ -297,6 +304,7 @@ export default {
   /* Para que la imagen sea redonda */
   margin-right: 10px;
 }
+
 .logo-icon {
   width: 50px;
   /* Ajusta el tamaño de la imagen del usuario según sea necesario */

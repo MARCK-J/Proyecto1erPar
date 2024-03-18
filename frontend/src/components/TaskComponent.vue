@@ -32,7 +32,9 @@
         <div v-for="task in tasks" :key="task.id" class="card mb-3" style="width: 18rem; margin-right: 20px;">
           <!-- Cabecera del panel -->
           <div class="card-header" style="color: white; background-color: rgb(114, 213, 147);">
-            <h5 class="mb-0">{{ task.titulo }}</h5>
+
+            <input v-model="task.titulo" type="text" class="form-control" id="fechaCreacion{{ task.id }}"
+              style="border: none; background: none; color: inherit; width: 100%; outline: none; cursor: pointer; font-size: inherit;">
           </div>
 
           <!-- Contenido del panel -->
@@ -56,6 +58,11 @@
               </select>
             </div>
             <div class="form-group mb-3">
+              <label for="etiquetaId{{ task.id }}">Etiqueta:</label>
+              <input v-model="task.etiquetaId" type="text" class="form-control" id="etiquetaId{{ task.id }}"
+                disabled>
+            </div>
+            <div class="form-group mb-3">
               <label for="fechaCreacion{{ task.id }}">Fecha Creación:</label>
               <input v-model="task.fechaCreacion" type="text" class="form-control" id="fechaCreacion{{ task.id }}"
                 disabled>
@@ -67,8 +74,7 @@
             </div>
             <div class="form-group mb-3">
               <label for="fechaLimit{{ task.id }}">Fecha Límite:</label>
-              <input v-model="task.fechaLimite" type="datetime" class="form-control"
-                id="fechaLimite{{ task.id }}">
+              <input v-model="task.fechaLimite" type="datetime" class="form-control" id="fechaLimite{{ task.id }}">
             </div>
             <!-- Acciones -->
             <button @click="actualizarTarea(task)" class="btn btn-primary mr-1"
@@ -156,6 +162,10 @@ export default {
     }
   },
   methods: {
+    getTagName(etiquetaId) {
+      const tag = this.etiquetas.find(tag => tag.id === etiquetaId);
+      return tag ? tag.name : ''; // Devuelve el nombre de la etiqueta si se encuentra, de lo contrario devuelve una cadena vacía
+    },
 
     marcarComoCompletada(task) {
 
