@@ -58,10 +58,10 @@
               </select>
             </div>
             <div class="form-group mb-3">
-              <label for="etiquetaId{{ task.id }}">Etiqueta:</label>
-              <input v-model="task.etiquetaId" type="text" class="form-control" id="etiquetaId{{ task.id }}"
-                disabled>
+                <label for="etiquetaId{{ task.id }}">Etiqueta:</label>
+                <span class="form-control" id="etiquetaId{{ task.id }}">{{ obtenerNombreEtiqueta(task.etiquetaId) }}</span>
             </div>
+
             <div class="form-group mb-3">
               <label for="fechaCreacion{{ task.id }}">Fecha Creación:</label>
               <input v-model="task.fechaCreacion" type="text" class="form-control" id="fechaCreacion{{ task.id }}"
@@ -162,9 +162,9 @@ export default {
     }
   },
   methods: {
-    getTagName(etiquetaId) {
-      const tag = this.etiquetas.find(tag => tag.id === etiquetaId);
-      return tag ? tag.name : ''; // Devuelve el nombre de la etiqueta si se encuentra, de lo contrario devuelve una cadena vacía
+    obtenerNombreEtiqueta(etiquetaId) {
+        const etiqueta = this.etiquetas.find(etiqueta => etiqueta.id === etiquetaId);
+        return etiqueta ? etiqueta.name : 'Etiqueta no encontrada';
     },
 
     marcarComoCompletada(task) {
